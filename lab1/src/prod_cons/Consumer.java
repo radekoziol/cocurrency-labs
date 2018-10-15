@@ -1,7 +1,5 @@
 package prod_cons;
 
-import java.util.stream.IntStream;
-
 /**
  * Created by student15 on 2018-10-08.
  */
@@ -15,14 +13,12 @@ public class Consumer {
 
     public synchronized void run(int id) {
 
-        IntStream.range(1, 3).forEach(i -> {
+        String message = null;
+        while (message == null) {
+            message = buffer.take();
+        }
 
-            String message = buffer.take();
-
-            System.out.println("Consumer " + id + " - just read " + message);
-
-        });
-
+        System.out.println("Consumer " + id + " - just read message: " + message);
     }
 
 }

@@ -1,5 +1,7 @@
 package prod_cons;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -11,32 +13,55 @@ public class Test {
 
         Buffer buffer = new Buffer();
 
-        Runnable producerTask = () -> {
+        List<Runnable> producerTasks = new ArrayList<>();
 
-            Consumer consumer = new Consumer(buffer);
+        IntStream.range(1, 5).forEach(i -> {
+            producerTasks.add(() -> {
+                Consumer consumer = new Consumer(buffer);
+                consumer.run(i);
+            });
+        });
 
-            IntStream.range(1, 5).forEach(consumer::run);
-        };
+        List<Runnable> consumerTasks = new ArrayList<>();
 
-        Runnable consumerTask = () -> {
+        IntStream.range(1, 3).forEach(i -> {
+            producerTasks.add(() -> {
+                Producer producer = new Producer(buffer);
+                producer.run(i);
+            });
+        });
 
-            Producer producer = new Producer(buffer);
-            IntStream.range(1, 4).forEach(producer::run);
-        };
+
+        List<Thread> producerThreads = new ArrayList<>();
+        List<Thread> consumerThreads = new ArrayList<>();
+
+        consumerTasks.forEach(t -> consumerThreads.add(new Thread(t)));
+        producerTasks.forEach(t -> producerThreads.add(new Thread(t)));
+
+        producerThreads.forEach(Thread::start);
+        consumerThreads.forEach(Thread::start);
 
 
-        Thread producerThread = new Thread(producerTask);
-        Thread consumerThread = new Thread(consumerTask);
+        producerThreads.forEach(t -> {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
 
-        producerThread.start();
-        consumerThread.start();
 
-        try {
-            producerThread.join();
-            consumerThread.join();
+        consumerThreads.forEach(t -> {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
     }
+
+
 }
+
