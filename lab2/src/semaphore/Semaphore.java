@@ -3,36 +3,31 @@ package semaphore;
 public class Semaphore {
 
     private Integer counter;
+    private Integer limit;
 
-    public Semaphore(int counter) {
+    public Semaphore(int counter, Integer limit) {
         this.counter = counter;
+        this.limit = limit;
     }
 
-    public void post() {
+    public synchronized void post() {
 
-        synchronized (counter) {
-            counter++;
-        }
-
+        counter++;
+        notifyAll();
     }
 
-    public void take() {
+    public synchronized void take() {
 
-        synchronized (counter) {
+        while (counter < 0 && counter < limit) {
 
-            while (counter < 0) {
-
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-
-            counter--;
-
         }
 
+        counter--;
 
     }
 

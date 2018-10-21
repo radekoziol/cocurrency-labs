@@ -20,7 +20,7 @@ public class Test {
 
         List<Runnable> clientTasks = new ArrayList<>();
 
-        IntStream.range(1, 7).forEach(i -> {
+        IntStream.range(1, 16).forEach(i -> {
             clientTasks.add(() -> {
                 Client client = new Client(shop);
                 try {
@@ -40,7 +40,7 @@ public class Test {
 
         clientThreads.forEach(t -> {
             try {
-                t.join(1000);
+                t.join(10000);
                 t.interrupt();
             } catch (InterruptedException e) {
                 e.printStackTrace();

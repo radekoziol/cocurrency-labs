@@ -1,5 +1,7 @@
 package self_service_shop;
 
+import java.util.Random;
+
 public class Client {
 
     private final Shop shop;
@@ -17,7 +19,7 @@ public class Client {
 
         try {
             System.out.println("Client " + id + " starting shopping");
-            Thread.sleep(500);
+            Thread.sleep(new Random().nextInt(1000));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -25,6 +27,9 @@ public class Client {
         System.out.println("Client " + id + " done shopping");
 
         shop.returnCart(cart);
+
+        System.out.println("Client " + id + " returned cart");
+
 
     }
 
