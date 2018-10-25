@@ -25,7 +25,7 @@ public class Test {
         List<Runnable> consumerTasks = new ArrayList<>();
 
         IntStream.range(1, 3).forEach(i -> {
-            producerTasks.add(() -> {
+            consumerTasks.add(() -> {
                 Producer producer = new Producer(buffer);
                 producer.run(i);
             });
