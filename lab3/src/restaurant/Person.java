@@ -1,9 +1,6 @@
 package restaurant;
 
 import java.util.Random;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by student10 on 2018-11-05.
@@ -14,8 +11,6 @@ public class Person {
     private final Waiter waiter;
     private Person partner;
     private boolean isWaiting;
-    final Lock lock = new ReentrantLock();
-    private Condition isReady = lock.newCondition();
 
     public Person(String name, Waiter waiter, Person partner) {
         this.name = name;
@@ -66,19 +61,5 @@ public class Person {
         return name;
     }
 
-    public Condition getIsReady() {
-        return isReady;
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof Person) {
-            return ((Person) o).getName().equals(name);
-        }
-        return false;
-    }
-
-    public void notifyPartner() {
-
-    }
 }

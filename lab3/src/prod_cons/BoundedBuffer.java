@@ -18,6 +18,7 @@ class BoundedBuffer {
 
     public void put(Object x) throws InterruptedException {
         lock.lock();
+
         try {
             while (count == items.length)
                 notFull.await();
@@ -28,10 +29,12 @@ class BoundedBuffer {
         } finally {
             lock.unlock();
         }
+
     }
 
     public Object take() throws InterruptedException {
         lock.lock();
+
         try {
             while (count == 0)
                 notEmpty.await();

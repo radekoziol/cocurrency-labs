@@ -11,7 +11,7 @@ public class Consumer {
         this.buffer = buffer;
     }
 
-    public synchronized void run(int id) throws InterruptedException {
+    public void run(int id) throws InterruptedException {
 
         String message = null;
         while (message == null) {

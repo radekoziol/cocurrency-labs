@@ -1,5 +1,7 @@
 package prod_cons;
 
+import java.util.stream.IntStream;
+
 /**
  * Created by student15 on 2018-10-08.
  */
@@ -11,11 +13,17 @@ public class Producer {
         this.buffer = buffer;
     }
 
-    public synchronized void run(int id) throws InterruptedException {
+    public void run(int id) throws InterruptedException {
 
-        buffer.put(String.valueOf(id));
+        IntStream.range(4, 10).forEach(i -> {
+            try {
+                buffer.put(String.valueOf(id * i));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-        System.out.println("Producer " + id + " - just put " + "message: " + id);
+            System.out.println("Producer " + id + " - just put " + "message: " + id * i);
+        });
 
     }
 }

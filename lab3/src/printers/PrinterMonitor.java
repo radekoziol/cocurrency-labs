@@ -21,7 +21,7 @@ public class PrinterMonitor {
     }
 
 
-    public synchronized Printer take() throws InterruptedException {
+    public Printer take() throws InterruptedException {
 
         lock.lock();
 
@@ -54,7 +54,7 @@ public class PrinterMonitor {
     }
 
 
-    public synchronized void post(Printer printer) throws Exception {
+    public void post(Printer printer) throws Exception {
         lock.lock();
         try {
 
