@@ -5,11 +5,12 @@ public class BinarySemaphore {
     private boolean isTaken;
 
 
-    public void post() {
+    public synchronized void post() {
         isTaken = false;
+        notifyAll();
     }
 
-    public void take() {
+    public synchronized void take() {
 
         while (isTaken) {
 

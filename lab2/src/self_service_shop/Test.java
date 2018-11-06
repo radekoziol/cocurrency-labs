@@ -40,7 +40,7 @@ public class Test {
 
         clientThreads.forEach(t -> {
             try {
-                t.join(10000);
+                t.join();
                 t.interrupt();
             } catch (InterruptedException e) {
                 e.printStackTrace();

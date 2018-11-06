@@ -8,15 +8,11 @@ import java.util.Random;
 public class Shop {
 
     private final List<Cart> cartList;
-    private Semaphore newClientsSemaphore;
-    private Semaphore shoppingClientsSemaphore;
     private Semaphore cartSemaphore;
 
     public Shop(List<Cart> cartList) {
         this.cartList = cartList;
-        this.newClientsSemaphore = new Semaphore(0, 100);
-        this.shoppingClientsSemaphore = new Semaphore(0, 20);
-//        this.cartSemaphore= new Semaphore(0, 1);
+        this.cartSemaphore = new Semaphore(1, 1);
     }
 
     public Cart getCart() throws Exception {
@@ -25,10 +21,7 @@ public class Shop {
 
         while (cart == null) {
 
-
-            newClientsSemaphore.take();
-
-            synchronized (cartList) {
+            cartSemaphore.take();
 
                 cart = cartList
                         .stream()
@@ -36,19 +29,18 @@ public class Shop {
                         .findFirst()
                         .orElse(null);
 
-                newClientsSemaphore.post();
-
                 if (cart == null) {
                     System.out.println("None is available. Will come later!");
                     try {
-                        Thread.sleep(new Random().nextInt(2000));
+                        Thread.sleep(new Random().nextInt(3000));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 } else {
                     cart.setAvailability(Availability.TAKEN);
                 }
-            }
+
+            cartSemaphore.post();
 
         }
 
@@ -59,21 +51,14 @@ public class Shop {
 
     public void returnCart(Cart cart) throws Exception {
 
-
-        shoppingClientsSemaphore.take();
-
-        synchronized (cartList) {
+        cartSemaphore.take();
 
             cartList.stream()
                     .filter(c -> c.equals(cart))
                     .findFirst()
                     .orElseThrow(Exception::new)
                     .setAvailability(Availability.FREE);
-        }
 
-        shoppingClientsSemaphore.post();
-
-
-
+        cartSemaphore.post();
     }
 }

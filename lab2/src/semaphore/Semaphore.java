@@ -11,7 +11,6 @@ public class Semaphore {
     }
 
     public synchronized void post() {
-
         counter++;
         notifyAll();
     }
