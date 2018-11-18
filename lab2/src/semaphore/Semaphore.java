@@ -17,17 +17,17 @@ public class Semaphore {
 
     public synchronized void take() {
 
-        while (counter < 0 && counter < limit) {
+        while (counter == 0 && counter < limit) {
 
             try {
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
         }
 
         counter--;
-
     }
 
 

@@ -1,5 +1,6 @@
 package self_service_shop;
 
+
 import semaphore.Semaphore;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class Shop {
 
                 if (cart == null) {
                     System.out.println("None is available. Will come later!");
+                    cartSemaphore.post();
                     try {
                         Thread.sleep(new Random().nextInt(3000));
                     } catch (InterruptedException e) {
@@ -38,9 +40,8 @@ public class Shop {
                     }
                 } else {
                     cart.setAvailability(Availability.TAKEN);
+                    cartSemaphore.post();
                 }
-
-            cartSemaphore.post();
 
         }
 
