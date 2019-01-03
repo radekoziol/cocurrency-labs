@@ -5,22 +5,28 @@ package counter;
  */
 public class Counter {
 
-    public Integer counter;
+    private Integer counter;
 
     public Counter(Integer counter) {
         this.counter = counter;
     }
 
-    public  void incrementCounter(){
-        synchronized (counter) {
+    public synchronized void incrementCounter() throws InterruptedException {
+//         (counter) {
+        Thread.sleep(10000);
             counter++;
-        }
+        //}
     }
 
-    public  void decrementCounter(){
-        synchronized (counter) {
-            counter--;
-        }
+    public void decrementCounter() throws InterruptedException {
+//        synchronized (counter) {
+        Thread.sleep(10000);
+//
+//            counter--;
+//        }
     }
 
+    public Integer getCounter() {
+        return counter;
+    }
 }

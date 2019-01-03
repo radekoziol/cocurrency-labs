@@ -13,13 +13,21 @@ public class Test {
 
         Runnable incrementTask = () -> {
             IntStream.range(1, 100000).forEach(i -> {
-                counter.incrementCounter();
+                try {
+                    counter.incrementCounter();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             });
         };
 
         Runnable decrementTask = () -> {
             IntStream.range(1, 100000).forEach(i -> {
-                counter.decrementCounter();
+                try {
+                    counter.decrementCounter();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             });
         };
 
@@ -28,6 +36,10 @@ public class Test {
 
         incrementThread.start();
         decrementThread.start();
+
+        IntStream.range(1, 1000).forEach(i -> {
+            System.out.println(counter.getCounter());
+        });
 
         try {
             incrementThread.join();
@@ -40,7 +52,7 @@ public class Test {
 //        }
 
 
-        System.out.println(counter.counter);
+//        System.out.println(counter.counter);
 
     }
 }

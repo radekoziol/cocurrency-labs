@@ -4,7 +4,6 @@ public class BinarySemaphore {
 
     private boolean isTaken;
 
-
     public synchronized void post() {
         isTaken = false;
         notifyAll();

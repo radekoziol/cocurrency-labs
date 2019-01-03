@@ -48,7 +48,6 @@ public class Test {
 
         clientThreads.forEach(Thread::start);
 
-
         clientThreads.forEach(t -> {
             try {
                 t.join(100000);
